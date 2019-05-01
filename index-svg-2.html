@@ -1,0 +1,45 @@
+
+<svg id="container" width="500" height="300"></svg>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+	// Load data with D3
+  d3.json('titanic-passengers.json')
+  .then(json => handleData(json))
+  
+  function handleData(data) {
+		const ages = data
+			.map(pass => pass.fields.age)
+			.filter(age => age !== undefined)
+		
+		// Create y scale fom 0 to max age
+		const yScale = d3.scaleLinear()
+			.domain([0, d3.max(ages)])
+			.range([0, 300])
+		
+		// Create x scale 
+		const xScale = d3.scaleLinear()
+			.domain([0, ages.length])
+			.range([300, 0])
+		
+		const xAxis = d3.axisBottom().scale(xScale)
+		const yAxis = d3.axisLeft().scale(yScale)
+		
+		// Make axis
+		
+    
+    d3.select('#container')
+			.selectAll('rect')
+			.data(ages)
+			.enter()
+			.append('rect')
+			.attr('y', (d) => 300 - yScale(d))
+			.attr('height', (d) => yScale(d))
+			.attr('width', (d) => 2)
+			.attr('transform', (d, i) => `translate(${3 * i}, 0)`)
+			.append('g')
+			.attr('transform', 'translate(50, 10)')
+			.call(yAxis)
+  }
+
+</script>

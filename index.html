@@ -1,0 +1,28 @@
+<body>
+<div id="container"></div>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+	// Getting started 
+	d3.select('body')									// Start by selecting the body
+		.selectAll('div')								// Select ALL divs
+		.data([5,6,2,8,4,9,1])					// add some data 
+		.enter()												// 
+		.append('div')
+		.text((d) => d)
+		.style('padding', '1em')
+		.style('width', (d) => `${d / 10 * 100}%`)
+		.style('background-color', 'red')
+		.style('margin', '1px')
+	
+	// Loading Data 
+	
+	// JSON
+	d3.json('metal.json')
+		.then(json => console.log(json))
+	
+	// CSV
+	d3.csv('metal_bands_2017.csv')
+		.then(csv => console.log(csv))
+</script>
+</body>

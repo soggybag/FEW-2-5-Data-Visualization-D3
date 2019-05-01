@@ -1,0 +1,36 @@
+
+<div id="container"></div>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+	// Load data with D3
+	// D3 fetches many files types 
+	// json, csv, etc.
+	// https://github.com/d3/d3/blob/master/API.md#fetches-d3-fetch
+  d3.json('titanic-passengers.json')
+  .then(json => handleData(json))
+  
+  function handleData(data) {
+		const ages = data
+			.map(pass => pass.fields.age)
+			.filter(age => age !== undefined)
+    
+    d3.select('#container')
+			// select all elements even if they are non existent
+			.selectAll('div')
+			// Pass in data
+			.data(ages)
+			// Iterates over data items 
+			.enter()
+			// Appends a paragraph
+			.append('div')
+			// Set the style on element
+			.style('width', (d) => `${d}%`)
+			.style('background-color', (d) => `rgb(88, 66, ${d / 100 * 255})`)
+			// Set the text content of an element
+			.text((d) => `Age ${d}`)
+  }
+	
+	
+
+</script>

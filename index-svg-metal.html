@@ -1,0 +1,22 @@
+
+<svg id="container" width="500" height="500"></svg>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+	// Load data with D3
+  d3.json('metal.json')
+  .then(json => handleData(json))
+  
+  function handleData(data) {
+    d3.select('#container')
+			.style('border', '1px solid')
+			.selectAll('rect')
+			.data(data)
+			.enter()
+			.append('rect')
+			.attr('height', (d) => 10)
+			.attr('width', (d) => 5)
+			.attr('transform', (d, i) => `translate(${500 / 50 * i}, ${500 - d.fans / 4195 * 500})`)
+  }
+
+</script>
