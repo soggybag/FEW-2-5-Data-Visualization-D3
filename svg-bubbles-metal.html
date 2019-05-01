@@ -6,15 +6,15 @@
 	// D3 Bubble chart example done with vanilla JS 
 	// https://observablehq.com/@d3/bubble-chart
 	
-	d3.csv("https://raw.githubusercontent.com/d3/d3-hierarchy/v1.1.8/test/data/flare.csv")
+	d3.json("metal.json")
 		.then(stuff => {
 			console.log(stuff)
-			handleData(stuff.map(({id, value}) => {
+			handleData(stuff.map(({band_name, fans, formed, origin}) => {
 				return {
-					name: id.split(".").pop(), 
-					title: id.replace(/\./g, "/"), 
-					group: id.split(".")[1], 
-					value: +value
+					name: band_name, 
+					title: formed, 
+					group: origin, 
+					value: fans
 				}
 			}))
 		})
