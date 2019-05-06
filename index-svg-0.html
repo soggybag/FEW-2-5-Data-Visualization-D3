@@ -1,0 +1,54 @@
+<!--Create an SVG element to hold SVG shapes generated via D3-->
+<svg id="svg" width="500" height="500"></svg>
+
+<!--Import the D3 library-->
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+	
+	// This example generates an array of random data. 
+	const data = []
+	// Each data object in the data array will have three properties a, b, c
+	// The values are random 0 to 1 and so won't need to be normalized or scaled.
+	for (let i = 0; i < 50; i += 1) {
+		data.push({
+			a: Math.random(),
+			b: Math.random(),
+			c: Math.random()
+		})
+	}
+
+	// The function below handles the data 
+	handleData(data)
+  
+	// Handles data and draws SVG elements
+  function handleData(data) {
+		// Select the svg element above
+		d3.select('#svg')
+			// Apply a CSS style to the SVG element. 
+			.style('border', '1px solid')
+			// Select all rectangles (<rect> is an SVG element that draws a rectangle)
+			.selectAll('rect')
+			// Add data to D3
+			.data(data)
+			// Start processing your data 
+			.enter()
+			// For each data item append a <rect>
+			.append('rect')
+			// SVG elements use attributes to set their appearance. 
+			// Set the height width and opacity
+			.attr('height', d => d.a * 150) // height 0 to 150 based on a
+			.attr('width', d => d.b * 150)  // width 0 to 150 based on b
+			// SVG elements can also be styled with CSS styles	
+			.style('opacity', d => d.c)     // opacity 0 to 1 based on c
+			// Position the element with transform=translate(x,y)
+			// The second parameter is the index of the data value
+			// Here x is based on index and y is based on data a. 
+			.attr('transform', (d, i) => `translate(${500 / 50 * i}, ${500 - d.a * 500})`)
+  }
+
+</script>
+
+
+
+
+

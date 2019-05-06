@@ -1,0 +1,61 @@
+
+<svg id="container" width="900" height="300" style="border: 1px solid"></svg>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script>
+	// Make an SVG with D3 based on Titanic passenger data
+	
+	// Import the data with d3.json()
+  d3.json('titanic-passengers.json')
+		.then(json => handleData(json)) // Handle the promise
+		.catch(err => console.log(err.message))
+  
+	// Handle the loaded data here. 
+  function handleData(data) {
+		// Graph the ages of passengers
+		// Generate an array of ages and filter undefined values 
+		const ages = data
+			.map(pass => pass.fields.age)
+			.filter(age => age !== undefined)
+		
+		// Using a scale D3 will handle normalizing your data. 
+		// The height of the SVG is 300. You need the age values 
+		// scaled from 0 for the youngest person to 300 for the oldest person. 
+		// Here we'll use d3.scaleLinear() 
+		// https://github.com/d3/d3-scale/blob/master/README.md#scaleLinear
+		
+		// Create y scale fom 0 to max age
+		const yScale = d3.scaleLinear()
+			.domain([0, d3.max(ages)])  // set the input range for the scale
+																	// the range here is 0 to max age
+			.range([0, 300])						// Set the output range
+																	// the range of out put is 0 to 300
+		
+		// Create x scale 
+		const xScale = d3.scaleLinear() 
+			.domain([0, ages.length]) // Input range is 0 to length of data
+			.range([0, 900])						// Output range is 0 to 900
+		
+		// yScale and xScale are functions used to scale values. 
+		// yScale(value) should return value scaled to a range of 0 to 300
+		// xScale(value) should return value scaled to a range of 0 to 900
+		
+		const xAxis = d3.axisBottom().scale(xScale)
+		const yAxis = d3.axisLeft().scale(yScale)
+    
+    d3.select('#container')
+			.selectAll('rect')
+			.data(ages)
+			.enter()
+			.append('rect')
+			// Use the yScale() and xScale() functions here
+			.attr('x', (d, i) => `${xScale(i)}`) // xScale(index)
+			.attr('y', (d) => 300 - yScale(d))   // 300 - yScale(d)
+			// Set the height to yScale(value)
+			.attr('height', d => yScale(d)) // yScale(d)
+			.attr('width', d => 1)
+			.attr('opacity', 0.5)
+			.attr('fill', 'red')
+  }
+
+</script>

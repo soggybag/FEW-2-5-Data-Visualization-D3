@@ -8,15 +8,31 @@
   .then(json => handleData(json))
   
   function handleData(data) {
+		// Make a scale for fans
+		const yScale = d3.scaleLinear()
+			.domain([0, d3.max(data.map(v => v.fans))])  
+			.range([0, 500])
+		 
+		// make a scale for the number of elements
+		const xScale = d3.scaleLinear() 
+			.domain([0, data.length]) 
+			.range([0, 500])
+		
     d3.select('#container')
 			.style('border', '1px solid')
 			.selectAll('rect')
 			.data(data)
 			.enter()
 			.append('rect')
-			.attr('height', (d) => 10)
-			.attr('width', (d) => 5)
-			.attr('transform', (d, i) => `translate(${500 / 50 * i}, ${500 - d.fans / 4195 * 500})`)
+			// set height by scaling fans with y
+			.attr('height', d => yScale(d.fans))
+			.attr('width', 9)
+			// Set x based on index
+			.attr('x', (d, i) => 500 / 50 * i)
+			// Set y using height - yScale(fans) 
+			.attr('y', d => 500 - yScale(d.fans))
+			// Bands who have not split are red the others are green
+			.style('fill', d => d.split === '-' ? '#ff000099' : '#00ff0099')
   }
 
 </script>

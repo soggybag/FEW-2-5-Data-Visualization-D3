@@ -1,20 +1,26 @@
 
+<!--Use this container to display elements generated via D3-->
 <div id="container"></div>
 
+<!--
+	Load the D3 library from the CDN
+	Note this should be version 5!
+-->
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script>
-	// Load data with D3
-	// D3 fetches many files types 
-	// json, csv, etc.
-	// https://github.com/d3/d3/blob/master/API.md#fetches-d3-fetch
+	// Load the Titanic data using d3.json()
   d3.json('titanic-passengers.json')
-  .then(json => handleData(json))
+		// Handle the promise
+  	.then(json => handleData(json))
   
+	// Handle the loaded JSON here. 
   function handleData(data) {
+		// Map the passenger ages and filter undefined values
 		const ages = data
 			.map(pass => pass.fields.age)
 			.filter(age => age !== undefined)
     
+		// Select div#container
     d3.select('#container')
 			// select all elements even if they are non existent
 			.selectAll('div')
@@ -24,9 +30,18 @@
 			.enter()
 			// Appends a paragraph
 			.append('div')
-			// Set the style on element
-			.style('width', (d) => `${d}%`)
-			.style('background-color', (d) => `rgb(88, 66, ${d / 100 * 255})`)
+			// Use .style(prop, value) set a CSS style. 
+			// `prop` names the CSS property. 
+			// `value` defines the value. When value is a function 
+			// is receives the data element as a parameter. 
+			// Otherwise the value is returned as is. 
+			// Set the style on element. Here we set the age to a %. 
+			// This is not normalized but ages should be in the range of 0 to 100
+			// so it should work as a sort of fudge.
+			.style('width', (d) => `${d}%`) // use a function to get the data value
+			.style('background-color', (d) => `rgb(255, 0, ${d / 100 * 255})`)
+			// Here value is a string and is returned as it reads. 
+			.style('padding', '10px 0')
 			// Set the text content of an element
 			.text((d) => `Age ${d}`)
   }
