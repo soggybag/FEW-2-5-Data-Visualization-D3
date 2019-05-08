@@ -1,0 +1,132 @@
+<!--https://petrichor.studio/2018/05/21/get-started-creating-d3-maps/ -->
+
+<style>
+	body {
+		margin: 5px;
+		text-align: center;
+		background-color: #007da4;
+	}
+
+	svg {
+		width: calc(100vmin - 10px);
+		outline: 1px solid white;
+		stroke-linejoin: round;
+		stroke-linecap: round;
+	}
+
+	path.feature {
+		stroke-width: 1px;
+		stroke: white;
+		fill: none;
+	}
+
+	p, a {
+		color: white;
+		font-family: sans-serif;
+		font-size: 0.8rem;
+	}
+</style>
+
+<svg viewBox="0 0 1200 800">
+  <!--  we'll put SVG <path> elements here with D3js -->
+</svg>
+
+<p>
+  Blog post:
+  <a href="https://petrichor.studio/2018/05/21/get-started-creating-d3-maps/" target="_blank">
+    "Get Started Creating D3 Maps"
+  </a>
+</p>
+
+<p>
+  Canvas version:
+  <a href="https://codepen.io/jwasilgeo/pen/mLawGL" target="_blank">
+    https://codepen.io/jwasilgeo/pen/mLawGL
+  </a>
+</p>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://unpkg.com/topojson-client@3.0.0/dist/topojson-client.min.js"></script>
+<script>
+// make D3 aware of the <svg> element in the HTML
+const svg = d3.select("svg")
+
+// get <svg> width and height from HTML instead of hard-coding values
+const svgWidth = +svg.attr("viewBox").split(" ")[2]
+const svgHeight = +svg.attr("viewBox").split(" ")[3]
+
+// define the map projection
+// we're going from spherical latitude/longitude coordinates to a flat map
+const projection = d3
+  // use Mercator for now, sigh, because of web map ubiquity...
+  .geoMercator()
+  // shift the projection translation offset to half of the parent <svg> width and height
+  .translate([svgWidth / 2, svgHeight / 2])
+  // [0, 0] is redundant, but you could change the initial center [longitude, latitude]
+  .center([0, 0])
+  // [0, 0, 0] is also redundant, but you can change the rotation along 3 axes
+  // this property is really fun, so experiment with different values!
+  .rotate([0, 0, 0])
+  // set an initial scale value
+  .scale(svgWidth / (2 * Math.PI));
+
+// NOTE: if you want to skip setting the translate and scale values
+// and instead zoom out to the whole world, you can just use this shortcut:
+// projection.fitSize([svgWidth, svgHeight], {
+//   type: "Sphere"
+// });
+
+// "d3.geoPath" helps convert from geojson coordinates to <svg> or <canvas> drawing instructions
+// it needs to know about the projection that was defined above
+
+// I like to refer to it as a "geographic path generator" throughout the code
+var geoPathGenerator = d3.geoPath().projection(projection);
+
+// request publicly available and hosted world topojson data,
+// convert it to geojson,
+// and then draw it in the <svg>
+d3
+  .json("https://unpkg.com/world-atlas@1.1.4/world/50m.json")
+  .then(function(loadedTopoJson) {
+    // use the concept of a topojson "mesh" to convert topojson
+    // to a single, efficient geojson geometry
+    var geoJson = topojson.mesh(
+      loadedTopoJson,
+      loadedTopoJson.objects.countries
+    );
+
+    // and then draw the single geojson representing all country polygons
+    // as a single <path> element within the <svg> parent element
+    // (1 geojson geometry results in only 1 <path> element)
+    svg
+      .append("path")
+      .attr("d", geoPathGenerator(geoJson))
+      .attr("class", "feature");
+
+    // IMPORTANT NOTE:
+    // an alternate and very common approach is to convert the topojson to a geojson feature collection,
+    // where each country polygon is represented by an individual geojson feature
+    // and thus each geojson feature is drawn as a unique <path> element within the <svg> parent element    
+    
+    // RESULT:
+    // many geojson features resulting in as many <path> elements
+
+    // WHY?
+    // this is useful for thematic mapping
+
+    // HOW?
+    // you can uncomment the code below and try it out
+
+    // var geoJson = topojson.feature(loadedTopoJson, loadedTopoJson.objects.land);
+
+    // svg
+    //   .selectAll("path")
+    //   .data(geoJson.features)
+    //   .enter()
+    //   .append("path")
+    //   .attr("d", geoPathGenerator)
+    //   .attr("class", "feature");
+  });
+
+
+</script>
