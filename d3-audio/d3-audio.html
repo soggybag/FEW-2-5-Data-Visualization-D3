@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<title>D3 v4 - Music viz</title>
+<style>
+html, body, #svg {
+  background-color: #130C0E;
+}
+button {
+  font-size: 14px;
+  background: #130C0E;
+  color: #2c7bb6;
+  border: none;
+  outline:none;
+  padding: 4px 8px;
+  letter-spacing: 1px;
+}
+button:hover {
+  background: #2c7bb6;
+  color: #130C0E;
+}
+</style>
+</head>
+
+<body>
+  <div>
+    <button id="button-play">Play &#9658;</button>
+    <button id="button-pause">Pause ||</button>
+    <!-- <button onclick="document.getElementById('audioElement').pause()">Pause ||</button>
+    <button onclick="document.getElementById('audioElement').volume+=0.5">Vol +</button>
+    <button onclick="document.getElementById('audioElement').volume-=0.5">Vol -</button> -->
+  </div>
+
+<script src="https:///d3js.org/d3.v4.min.js"></script>
+<script>
+
+
+      // https://www.kkhaydarov.com/audio-visualizer/
+      // https://medium.com/@duraraxbaccano/computer-art-visualize-your-music-in-javascript-with-your-browser-part-2-fa1a3b73fdc6
+
+      const playButton = document.getElementById('button-play')
+
+      playButton.addEventListener('click', (e) => {
+        // setup()
+        startAudio()
+      })
+
+      const pauseButton = document.getElementById('button-pause')
+
+      pauseButton.addEventListener('click', (e) => {
+        // setup()
+        audio.pause()
+      })
+
+      // --------------------------------------------------------
+      // Audio
+
+      const audio = new Audio()
+      audio.src = 'bird-whistling-single-robin-a.wav'
+      let analyser
+      let frequencyArray
+
+      function startAudio() {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+        
+        analyser = audioContext.createAnalyser()
+        const source = audioContext.createMediaElementSource(audio)
+        source.connect(analyser)
+        analyser.connect(audioContext.destination)
+
+        frequencyArray = new Uint8Array(analyser.frequencyBinCount)
+        
+        audio.play()
+
+        render()
+      }
+
+      function setup() {
+        const audio = new Audio()
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+        analyser = audioContext.createAnalyser()
+
+        const p = audio.play()
+        render()
+      }
+      
+      // --------------------------------------------------------
+      // Canvas
+
+      
+      function render() {
+
+        analyser.getByteFrequencyData(frequencyArray)
+
+        
+        requestAnimationFrame(render)
+      }
+
+
+
+
+
+
+
+
+// const playButton = document.getElementById('button-play')
+
+// playButton.addEventListener('click', (e) => {
+//   startAudio()
+// })
+
+//     // --------------------------------------------------------
+//     // Audio
+
+//     let analyser
+//     let frequencyData
+//     let audio
+
+// function startAudio() {
+//     audio = new Audio()
+//     const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+    
+//     audio.src = './bird-whistling-a.wav'
+//     // audio.src = 'log-sine-sweep.wav'
+
+//     analyser = audioContext.createAnalyser()
+//     const source = audioContext.createMediaElementSource(audio)
+//     source.connect(analyser)
+//     analyser.connect(audioContext.destination)
+//     frequencyData = new Uint8Array(analyser.frequencyBinCount)
+
+//     analyser.getByteFrequencyData(frequencyData);
+//     var h = window.innerHeight - 100,
+//         w = window.innerWidth-10;
+
+//     const colorScale = d3.scaleLinear()
+//     .domain([0, 150])
+//     .range(["#2c7bb6","#d7191c"]);
+
+//   const circleX = d3.scaleLinear()
+//     .domain([0, frequencyData.length])
+//     .range([0, w]);
+
+//   const svg = d3.select('body').append('svg')
+//     .attr('width', w)
+//     .attr('height', h);
+
+//   const dots = svg.selectAll('circle')
+//     .data(frequencyData)
+//     .enter().append('circle')
+//     .attr('r', function(d) { return w/frequencyData.length/2 +.3; })
+//     .attr('cx', function(d, i) { return circleX(i); })
+//     .attr('cy', function(d) { return h/2 - d; })
+//     .attr('fill', function(d, i) { return colorScale(d); });
+    
+//   function drawChart() {
+//     requestAnimationFrame(drawChart);
+//     analyser.getByteFrequencyData(frequencyData);
+    
+//     svg.selectAll('circle')
+//       .data(frequencyData)
+//       .attr('cy', function(d) { return h/2 - d; })
+//       .attr('fill', function(d, i) { return colorScale(d); });
+
+//   };
+
+//   drawChart();
+      
+//   audio.play()
+// }
+
+// function setup() {
+//   const audio = new Audio()
+//   const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+//   analyser = audioContext.createAnalyser()
+
+//   const p = audio.play()
+//   render()
+// }
+
+
+
+</script>
+</body>
+</html>
