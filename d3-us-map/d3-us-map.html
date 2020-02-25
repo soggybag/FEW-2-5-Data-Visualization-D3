@@ -59,10 +59,10 @@ const svgHeight = +svg.attr("viewBox").split(" ")[3]
 // we're going from spherical latitude/longitude coordinates to a flat map
 const projection = d3
   // use Mercator for now, sigh, because of web map ubiquity...
-	// .geoMercator()
+	.geoMercator()
 	// .geoAzimuthalEqualArea()
 	// .geoOrthographic()
-	.geoEqualEarth()
+	// .geoEqualEarth()
 	
   // shift the projection translation offset to half of the parent <svg> width and height
   .translate([svgWidth / 2, svgHeight / 2])
