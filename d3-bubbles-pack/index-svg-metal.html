@@ -10,6 +10,10 @@
 
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script>
+	// -------------------------------------------------------------
+
+	// Show data as bars 
+
 	// Load data with D3
   d3.json('metal.json')
   .then(json => handleData(json))
@@ -42,9 +46,11 @@
 			.style('fill', d => d.split === '-' ? '#ff000099' : '#00ff0099')
 	}
 	
-	// ----------------------------------------------------------------
+	// ****************************************************************
 
 	// Display circle with text
+
+	// ****************************************************************
 
 	// Load Metal.json
 	d3.json('metal.json')
@@ -78,7 +84,7 @@
 				.attr('fill', (d, i) => {
 					return 'rgba(255, 0, 0, 0.5)'
 				})
-				
+
 			// make some text elements
 			const text = gEnter.append('text')
 				.text((d, i) => {
