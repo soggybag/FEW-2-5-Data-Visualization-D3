@@ -1,5 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
 
 <svg id="container" width="500" height="500"></svg>
+<svg id="metal-svg" width="500" height="500"></svg>
 
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script>
@@ -33,6 +40,55 @@
 			.attr('y', d => 500 - yScale(d.fans))
 			// Bands who have not split are red the others are green
 			.style('fill', d => d.split === '-' ? '#ff000099' : '#00ff0099')
-  }
+	}
+	
+	// ----------------------------------------------------------------
+
+	// Display circle with text
+
+	// Load Metal.json
+	d3.json('metal.json')
+		.then((json) => {
+			// Figure out how many we can fit in a row
+			const rowCount = Math.floor(Math.sqrt(json.length))
+			const space = 500 / rowCount
+			// Select the SVG Container
+			const svg = d3.select('#metal-svg')
+				.style('border', 'solid 1px')
+
+			// Select all g (group) elements
+			const g = svg.selectAll('g')
+				.data(json)
+
+			// For each data point make a g element
+			const gEnter = g.enter()
+				.append('g')
+				// transform the group (g)
+				.attr('transform', (d, i) => {
+					const x = i % rowCount * space + (space / 2)
+					const y = Math.floor(i / rowCount) * space + (space / 2)
+					return `translate(${x}, ${y})`
+				})
+
+			// Make some circle elements
+			const circles = gEnter.append('circle')
+				.attr('r', (d, i) => {
+					return d.fans / 100
+				})
+				.attr('fill', (d, i) => {
+					return 'rgba(255, 0, 0, 0.5)'
+				})
+				
+			// make some text elements
+			const text = gEnter.append('text')
+				.text((d, i) => {
+					return d.band_name
+				})
+				.attr('text-anchor', 'middle')
+				.attr('alignment-baseline', 'middle')
+		})
+
 
 </script>
+</body>
+</html>
