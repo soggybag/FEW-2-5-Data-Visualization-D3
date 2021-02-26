@@ -97,6 +97,7 @@
 				.attr("x", 0)
 				.attr("y", (d, i, nodes) => `${i - nodes.length / 2 + 0.8}em`)
 				.text(d => d);
+				
 		// Sets the hover label
 		leaf.append("title")
 			.text(d => `Formed: ${d.data.formed}\n${d.data.country}`);
