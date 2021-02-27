@@ -2,6 +2,8 @@
 
 This example displays a map of the world and maps earthquakes incidents onto the map. 
 
+See the live example [here](https://soggybag.github.io/FEW-2-5-Data-Visualization-D3/d3-world-map-earthquakes/index.html). 
+
 ## What is this? 
 
 This example displays a world map using d3 and GeoJSON data. It loads historical earthquake data from a csv and maps all of the earthquakes with a magnitude greater than 7 onto the map. Hovering over an an earthquake displays the magnitude. This is all done using D3.js.
