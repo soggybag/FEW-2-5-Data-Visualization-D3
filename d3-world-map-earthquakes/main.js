@@ -1,32 +1,3 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-body, html {
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-path {
-  stroke: white;
-  stroke-width: 0.25px;
-  fill: grey;
-}
-
-#svg {
-	border: 1px solid;
-}
-</style>
-<body>
-
-<svg id="svg" width="960" height="500"></svg>
-<!-- Load D3 -->
-<script src="https://d3js.org/d3.v6.min.js"></script>
-<!-- Load geo json - map -->
-<script src="https://unpkg.com/topojson@3"></script>
-<script>
-
 // ------------------------------------------------------
 // Set the size of the map
 const width = 960
@@ -148,6 +119,7 @@ function handleData([topology, earthquakeData]) {
 	const infoBox = d3.select('#svg')
 		.append('g')
 		.attr('class', 'info-box')
+		.attr('display', 'none')
 
 	// Make the black box 
 	infoBox.append('rect')
@@ -167,7 +139,3 @@ function handleData([topology, earthquakeData]) {
 		.attr('alignment-baseline', 'middle')
 
 }
-
-</script>
-</body>
-</html>

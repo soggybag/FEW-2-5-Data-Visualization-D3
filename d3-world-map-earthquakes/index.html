@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body, html {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+path {
+  stroke: white;
+  stroke-width: 0.25px;
+  fill: grey;
+}
+
+#svg {
+	border: 1px solid;
+}
+</style>
+<body>
+
+<svg id="svg" width="960" height="500"></svg>
+<!-- Load D3 -->
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<!-- Load geo json - map -->
+<script src="https://unpkg.com/topojson@3"></script>
+<script src="main.js"></script>
+</body>
+</html>
