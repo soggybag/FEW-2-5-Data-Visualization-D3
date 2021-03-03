@@ -10,6 +10,15 @@ This example displays a world map using d3 and GeoJSON data. It loads historical
 
 The data represented here covers 1965 to 2016 which is a lot of information! For this reason filtering to 7+ magnitude quakes shows a reasonable amount of information without bogging down the browser. 
 
+The earthquake data contains the following fields: 
+
+> Date, Time, Latitude, Longitude, Type, Depth, Depth Error, Depth Seismic Stations,
+> Magnitude, Magnitude Type, Magnitude Error, Magnitude Seismic Stations,
+> Azimuthal Gap, Horizontal Distance, Horizontal Error, Root Mean Square, ID,
+> Source, Location Source, Magnitude Source, Status
+
+That's a lot of data! This example only uses the Latitude, Longitude, and Magnitude. 
+
 ## Concepts
 
 - Loading data d3.csv()
@@ -183,7 +192,16 @@ While not a scale the projection acts as scale converting latitude and longitude
 
 - https://www.d3indepth.com/scales/
 
+## Challenges!
+
+You can expand your knowledge and practice your craft by expanding what is in this example. try these challenges: 
+
+- The popup could display more information. This could be: 
+	- Date
+	- Station
+	- Or anything else from the list above
+
+
 ## Credits
 
 Sorry I can't credit the earthquake data, I don't know where it came from. 
-
