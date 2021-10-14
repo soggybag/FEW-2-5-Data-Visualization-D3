@@ -99,8 +99,6 @@ function handleData([topology, earthquakeData]) {
 			d3.select(this)
 				.attr('stroke', '#f00')
 			d3.select('.info-box')
-				.attr('x', d3.select(this).attr('cx'))
-				.attr('y', d3.select(this).attr('cy'))
 				.attr('display', 'yes')
 				.attr('transform', `translate(${d3.select(this).attr('cx')}, ${d3.select(this).attr('cy')})`)
 			d3.select('.info-box text')
